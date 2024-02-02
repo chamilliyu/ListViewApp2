@@ -78,42 +78,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void loadContent() {
-        try {
-            File path = getApplicationContext().getFilesDir();
-            File readFrom = new File(path, "list.txt");
-            byte[] content = new byte[(int) readFrom.length()];
-            FileInputStream stream = new FileInputStream(readFrom);
-            stream.read(content);
-            stream.close();
-            String s = new String(content);
-            s = s.substring(1, s.length() - 1);
-            String[] split = s.split(", ");
-            for (String item : split) {
-                String[] viewData = item.split(";");
-                if (viewData.length == 3) {
-                    items.add(new ClassView(viewData[0], viewData[1], viewData[2]));
-                }
-            }
-            adapter.notifyDataSetChanged();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            File path = getApplicationContext().getFilesDir();
-            FileOutputStream writer = new FileOutputStream(new File(path, "list.txt"));
-            writer.write(items.toString().getBytes());
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void removeItem(int position) {
         makeToast("Removed: " + items.get(position));
         items.remove(position);
